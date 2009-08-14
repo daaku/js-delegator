@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Focus Delegation</title>
+  </head>
+  <body>
+    <div>
+      <a>Linky One</a>
+      <a>Linky Two</a>
+    </div>
+
+    <input class="button" type="button" value="A Button">
+
+    <input id="one" value="one me">
+    <input id="two" value="two i">
+
+    <div id="more">
+      <input value="another">
+      <div>
+        <input value="one">
+      </div>
+    </div>
+
+    <br>
+    <input type="button" id="clear-log" value="Clear Log">
+
+    <hr>
+    <ol id="log"></ol>
+
+
+    <script src="delegator.js"></script>
+    <script>
+      function delegateLogEvent(selector, type) {
+        Delegator.listen(
+          selector,
+          type,
+          function(ev) {
+            var li = document.createElement('li');
+            li.innerHTML = (
+              '<strong>selector</strong> = ' + selector +
+              ', <strong>type</strong> = ' + type +
+              ', <strong>this.id</strong> = ' + this.id +
+              ', <strong>this.className</strong> = ' + this.className +
+              (this.value
+                ? ', <strong>this.value</strong> = ' + this.value
+                : ', <strong>this.innerHTML</strong> = ' + this.innerHTML
+              )
+            );
+            document.getElementById('log').appendChild(li);
+          }
+        );
+      }
+      window.onload = function() {
+        delegateLogEvent('#one', 'focus');
+        delegateLogEvent('#one', 'blur');
+        delegateLogEvent('#two', 'focus');
+        delegateLogEvent('#two', 'blur');
+        delegateLogEvent('#more input', 'focus');
+        delegateLogEvent('#more input', 'blur');
+        delegateLogEvent('.button', 'click');
+        delegateLogEvent('.button', 'mousedown');
+        delegateLogEvent('.button', 'mouseup');
+        delegateLogEvent('.button', 'mouseover');
+        delegateLogEvent('.button', 'mouseout');
+        delegateLogEvent('a', 'mouseover');
+        delegateLogEvent('input', 'keydown');
+        delegateLogEvent('input', 'keypress');
+        delegateLogEvent('input', 'keyup');
+
+        Delegator.listen('#clear-log', 'click', function() {
+          document.getElementById('log').innerHTML = '';
+        });
+      }
+    </script>
+  </body>
+</html>
