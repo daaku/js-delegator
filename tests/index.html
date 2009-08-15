@@ -41,19 +41,19 @@
     <div id="main"></div>
 
     <div id="top">
-      <div class="two"><span class="check">✓</span> 1. First Click Here</div>
-      <h2 class="two"><span class="check">✓</span> 2. Then Click Here</h2>
-      <div class="two three"><span class="check">✓</span> 3. Finally Here</div>
+      <div class="two"><span class="check">✓</span> <a id="click-one">1. First Click Here</a></div>
+      <h2 class="two"><span class="check">✓</span> <a id="click-two">2. Then Click Here</a></h2>
+      <div class="two three"><span class="check">✓</span> <a id="click-three">3. Finally Here</a></div>
     </div>
 
     <div id="focus-top">
-      <input class="one" value="4. Focus Here">
-      <input class="two" value="5. Focus Here">
+      <input id="focus-four" class="one" value="4. Focus Here">
+      <input id="focus-five" class="two" value="5. Focus Here">
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script src="http://jqueryjs.googlecode.com/svn/trunk/qunit/testrunner.js"></script>
-    <script src="delegator.js"></script>
+    <script src="../delegator.js"></script>
     <script src="tests.js"></script>
   </body>
 </html>
