@@ -14,7 +14,7 @@ class Delegator < Test::Unit::TestCase
     browser.text_field(:id, 'focus-four').focus
     browser.text_field(:id, 'focus-five').focus
     sleep 0.2
-    assert('pass' == browser.h2(:id, 'banner').attribute_value('class'))
+    assert('pass' == browser.h2(:id, 'banner').attribute_value('className'))
   end
 
 end
