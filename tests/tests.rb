@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'watir'
+require 'slowwatir'
 
 
 class Delegator < Test::Unit::TestCase
@@ -7,14 +7,13 @@ class Delegator < Test::Unit::TestCase
   def test_qunit
     browser = Watir::Browser.new
     browser.goto('http://dev.streamdiff.com/delegator/tests/index.html')
-    browser.link(:id, 'click-one').click
-    browser.link(:id, 'click-two').click
-    browser.link(:id, 'click-three').click
-    sleep 1
-    browser.text_field(:id, 'focus-four').focus
-    browser.text_field(:id, 'focus-five').focus
-    sleep 0.2
-    assert('pass' == browser.h2(:id, 'banner').attribute_value('className'))
+    browser.await.link(:id, 'click-one').click
+    browser.await.link(:id, 'click-two').click
+    browser.await.link(:id, 'click-three').click
+    browser.await.text_field(:id, 'focus-four').focus
+    browser.await.text_field(:id, 'focus-five').focus
+
+    assert(browser.await.h2(:class, 'pass').exists?)
   end
 
 end
