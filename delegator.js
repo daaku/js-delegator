@@ -137,6 +137,8 @@ var Delegator = {
       num         = subscribers.length,
       formSubmits = false,
       formDone    = false,
+      isClick     = type === 'click',
+      formKey     = type === 'keycode' && event.keyCode == 13,
       machine     = [];
 
     // "fix" basic event j0nx
@@ -164,10 +166,8 @@ var Delegator = {
       } catch(e) { return; }
 
       formSubmits = formSubmits || (
-        (type === 'click' &&
-         (domData.type === 'submit' || domData.type === 'image')) ||
-        (type === 'keypress' && event.keyCode === 13 &&
-         (domData.type === 'text' || domData.type === 'password')));
+        (isClick && (domData.type === 'submit' || domData.type === 'image')) ||
+        (formKey && (domData.type === 'text' || domData.type === 'password')));
 
       if (formSubmits && !formDone && domData.tagName === 'FORM') {
         Delegator.dispatch('submit', event);
