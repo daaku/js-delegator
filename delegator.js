@@ -131,8 +131,16 @@ var Delegator = {
    * @param event {Event}  the event object
    */
   dispatch: function(type, event) {
+    // "fix" basic event j0nx
+    // does this have memory leak issues?
+    if (!event.preventDefault) {
+      event.preventDefault = function() { event.returnValue = false; };
+      event.stopPropagation = function() { event.cancelBubble = true; };
+      event.target = event.srcElement;
+    }
+
     var
-      node        = event.target || event.srcElement,
+      node        = event.target,
       subscribers = Delegator.subscribers[type],
       num         = subscribers.length,
       formSubmits = false,
@@ -140,13 +148,6 @@ var Delegator = {
       isClick     = type === 'click',
       formKey     = type === 'keycode' && event.keyCode == 13,
       machine     = [];
-
-    // "fix" basic event j0nx
-    // does this have memory leak issues?
-    if (!event.preventDefault) {
-      event.preventDefault = function() { event.returnValue = false; };
-      event.stopPropagation = function() { event.cancelBubble = true; };
-    }
 
     // this logic does parallel matching of multiple rules while going up the
     // tree from the event target node. it does this in a single dom pass,
