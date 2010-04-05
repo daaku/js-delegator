@@ -109,31 +109,72 @@ test(
   function() {
     // this should get called three times
     Delegator.listen('#top', 'click', function() {
-                       ok(true, 'clicked on #top');
-                     });
+      ok(true, 'clicked on #top');
+    });
 
     // this should get called three times
     Delegator.listen('#top .two', 'click', function() {
-                       this.className += ' clicked';
-                       ok(true, 'clicked on #top .two');
-                     });
+      this.className += ' clicked';
+      ok(true, 'clicked on #top .two');
+    });
 
     Delegator.listen('#top h2.two', 'click', function() {
-                       ok(true, 'clicked on #top h2.two');
-                     });
+      ok(true, 'clicked on #top h2.two');
+    });
 
     Delegator.listen('.three', 'click', function() {
-                       this.className += ' clicked';
-                       ok(true, 'clicked on .three');
-                     });
+      this.className += ' clicked';
+      ok(true, 'clicked on .three');
+    });
 
     Delegator.listen('#top div.two.three', 'click', function() {
-                       this.className += ' clicked';
-                       ok(true, 'clicked on #top h2.two');
-                       start();
-                     });
+      this.className += ' clicked';
+      ok(true, 'clicked on #top h2.two');
+      start();
+    });
 
     expect(9);
+    stop();
+  }
+);
+
+test(
+  'listen on given node',
+
+  function() {
+    var
+      mid = document.getElementById('mid'),
+      button = document.createElement('button');
+    button.innerHTML = '4. Click Here';
+
+    Delegator.listen(button, 'click', function() {
+      ok(true, 'click on node');
+      start();
+    });
+    mid.appendChild(button);
+
+    expect(1);
+    stop();
+  }
+);
+
+test(
+  'listen with root and selector',
+
+  function() {
+    var
+      mid = document.getElementById('mid'),
+      button = document.createElement('button');
+    button.className = 'root-n-selector';
+    button.innerHTML = '5. Click Here';
+
+    Delegator.listen(mid, '.root-n-selector', 'click', function() {
+      ok(true, 'click on node');
+      start();
+    });
+    mid.appendChild(button);
+
+    expect(1);
     stop();
   }
 );
@@ -143,17 +184,17 @@ test(
 
   function() {
     Delegator.listen('#focus-top .one', 'focus', function() {
-                       ok(true, "focus on one");
-                     });
+      ok(true, "focus on one");
+    });
 
     Delegator.listen('#focus-top .one', 'blur', function() {
-                       ok(true, "blur on one");
-                     });
+      ok(true, "blur on one");
+    });
 
     Delegator.listen('#focus-top .two', 'focus', function() {
-                       ok(true, "focus on two");
-                       start();
-                     });
+      ok(true, "focus on two");
+      start();
+    });
 
     expect(3);
     stop();

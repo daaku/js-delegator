@@ -34,18 +34,47 @@ var Delegator = {
    *
    * This should work with click, mousedown, mouseup, mousemove,
    * mouseover, mouseout, keydown, keypress, keyup, blur, focus.
+   * TODO submit
+   *
+   * Handlers are always bound on the document. If a root element is given,
+   * it's id will be included in the selector (one will be generated if
+   * necessary). If a root element is given, but a selector is not, the event
+   * will be targetted to the element.
+   *
+   *     Delegator.listen('#id .className', 'click', fn);
+   *     Delegator.listen(root, '.className', 'click', fn);
+   *     Delegator.listen(root, 'click', fn);
    *
    * @access public
-   * @param selector  {String}   CSS selector
-   * @param type      {String}   the event type
-   * @param handler   {Function} the event handler
+   * @param root      {DOMElement}  root element
+   * @param selector  {String}      CSS selector
+   * @param type      {String}      the event type
+   * @param handler   {Function}    the event handler
    */
-  listen: function(selector, type, handler) {
+  listen: function(root, selector, type, handler) {
+    if (typeof root === 'string') {
+      handler = type;
+      type = selector;
+      selector = root;
+    } else {
+      if (!root.id) {
+        root.id = 'd-'+ (Math.random() * (1<<30)).toString(16).replace('.', '');
+      }
+      var id = '#' + root.id;
+      if (arguments.length === 4) {
+        selector = id + ' ' + selector;
+      } else {
+        handler = type;
+        type = selector;
+        selector = id;
+      }
+    }
+
     // for IE focus/blur support
     if (document.attachEvent) {
-      if (type == 'focus') {
+      if (type === 'focus') {
         type = 'focusin';
-      } else if (type == 'blur') {
+      } else if (type === 'blur') {
         type = 'focusout';
       }
     }
@@ -94,8 +123,9 @@ var Delegator = {
 
     while (node) {
       // a permission error can be thrown here. we silently ignore it
+      var domData;
       try {
-        var domData = {
+        domData = {
           id        : node.id,
           className : node.className,
           tagName   : node.tagName
@@ -125,8 +155,8 @@ var Delegator = {
         var rule = sub.compiled[state.index];
 
         // check if the expected rule matches the current node
-        if ((!rule.id || rule.id == domData.id) &&
-            (!rule.tagName || rule.tagName == domData.tagName) &&
+        if ((!rule.id || rule.id === domData.id) &&
+            (!rule.tagName || rule.tagName === domData.tagName) &&
             (
               rule.className.length === 0 ||
               Delegator.matchClasses(domData.className, rule.className))) {
@@ -141,7 +171,7 @@ var Delegator = {
           }
 
           // complete match, this handler is a match and good to go
-          if (state.index == -1) {
+          if (state.index === -1) {
             sub.handler.call(state.node, event);
           }
         }
