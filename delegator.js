@@ -121,6 +121,11 @@ var Delegator = {
       num         = subscribers.length,
       machine     = [];
 
+    // this logic does parallel matching of multiple rules while going up the
+    // tree from the event target node. it does this in a single dom pass,
+    // reading the id, className and tagName of each parent element once as it
+    // goes along. it's designed to minimize the amount of times it touches the
+    // dom, as well as keep the number of comparisons necessary low.
     while (node) {
       // a permission error can be thrown here. we silently ignore it
       var domData;
@@ -157,9 +162,8 @@ var Delegator = {
         // check if the expected rule matches the current node
         if ((!rule.id || rule.id === domData.id) &&
             (!rule.tagName || rule.tagName === domData.tagName) &&
-            (
-              rule.className.length === 0 ||
-              Delegator.matchClasses(domData.className, rule.className))) {
+            (rule.className.length === 0 ||
+             Delegator.matchClasses(domData.className, rule.className))) {
 
           // we just consumed a rule entry
           --state.index;
