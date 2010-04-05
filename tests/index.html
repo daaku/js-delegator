@@ -11,7 +11,7 @@
         background-color: #eee;
         cursor: pointer;
         font-size: 15px;
-        padding: 50px;
+        padding: 25px;
       }
       #top .check {
         visibility: hidden;
@@ -45,21 +45,23 @@
 
     <h2 id="qunit-banner"></h2>
     <h2 id="qunit-userAgent"></h2>
-    <ol id="qunit-tests"></ol>
-    <div id="main"></div>
 
     <div id="top">
       <div class="two"><span class="check">✓</span> <a id="click-one">1. First Click Here</a></div>
       <h2 class="two"><span class="check">✓</span> <a id="click-two">2. Then Click Here</a></h2>
       <div class="two three"><span class="check">✓</span> <a id="click-three">3. Finally Here</a></div>
     </div>
-
     <div id="mid"></div>
-
     <div id="focus-top">
       <input id="focus-four" class="one" value="6. Focus Here">
       <input id="focus-five" class="two" value="7. Focus Here">
     </div>
+    <form id="the-form">
+      <input type="submit" value="8. Click Here">
+      <input type="text" value="9. Focus and Press Enter">
+    </div>
+
+    <ol id="qunit-tests"></ol>
 
     <script src="http://origin.daaku.org/qunit/qunit/qunit.js"></script>
     <script src="../delegator.js"></script>

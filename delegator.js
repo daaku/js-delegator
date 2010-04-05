@@ -32,9 +32,8 @@ var Delegator = {
    *
    *   #id1 div.classOne, div.classTwo .classThree
    *
-   * This should work with click, mousedown, mouseup, mousemove,
-   * mouseover, mouseout, keydown, keypress, keyup, blur, focus.
-   * TODO submit
+   * This works with click, mousedown, mouseup, mousemove, mouseover, mouseout,
+   * keydown, keypress, keyup, blur, focus, submit.
    *
    * Handlers are always bound on the document. If a root element is given,
    * it's id will be included in the selector (one will be generated if
@@ -79,18 +78,35 @@ var Delegator = {
       }
     }
 
-    // setup the listener if needed
-    if (!(type in Delegator.subscribers)) {
-      document.addEventListener
-        ? document.addEventListener(type, Delegator.handler(type), true)
-        : document.attachEvent('on' + type, Delegator.handler(type));
-      Delegator.subscribers[type] = [];
+    // submit actually needs click and keypress
+    if (type === 'submit') {
+      Delegator.ensure('click');
+      Delegator.ensure('keypress');
+      if (!Delegator.subscribers.submit) {
+        Delegator.subscribers.submit = [];
+      }
+    } else {
+      Delegator.ensure(type);
     }
 
     // flatten potential multiple rules
     var rules = selector.split(/\s*,\s*/);
     for (var i=0, l=rules.length; i<l; i++) {
       Delegator.subscribers[type].push({ rule: rules[i], handler: handler });
+    }
+  },
+
+  /**
+   * Ensure an event handler for the given type is setup on the document.
+   *
+   * @param type {String} the event type
+   */
+  ensure: function(type) {
+    if (!(type in Delegator.subscribers)) {
+      document.addEventListener
+        ? document.addEventListener(type, Delegator.handler(type), true)
+        : document.attachEvent('on' + type, Delegator.handler(type));
+      Delegator.subscribers[type] = [];
     }
   },
 
@@ -119,7 +135,16 @@ var Delegator = {
       node        = event.target || event.srcElement,
       subscribers = Delegator.subscribers[type],
       num         = subscribers.length,
+      formSubmits = false,
+      formDone    = false,
       machine     = [];
+
+    // "fix" basic event j0nx
+    // does this have memory leak issues?
+    if (!event.preventDefault) {
+      event.preventDefault = function() { event.returnValue = false; };
+      event.stopPropagation = function() { event.cancelBubble = true; };
+    }
 
     // this logic does parallel matching of multiple rules while going up the
     // tree from the event target node. it does this in a single dom pass,
@@ -133,9 +158,21 @@ var Delegator = {
         domData = {
           id        : node.id,
           className : node.className,
-          tagName   : node.tagName
+          tagName   : node.tagName,
+          type      : node.type
         };
       } catch(e) { return; }
+
+      formSubmits = formSubmits || (
+        (type === 'click' &&
+         (domData.type === 'submit' || domData.type === 'image')) ||
+        (type === 'keypress' && event.keyCode === 13 &&
+         (domData.type === 'text' || domData.type === 'password')));
+
+      if (formSubmits && !formDone && domData.tagName === 'FORM') {
+        Delegator.dispatch('submit', event);
+        formDone = true;
+      }
 
       for (var i=0; i<num; i++) {
         // load and compile the subscriber rule if necessary

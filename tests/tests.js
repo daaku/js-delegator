@@ -200,3 +200,24 @@ test(
     stop();
   }
 );
+
+test(
+  'submit delegation',
+
+  function() {
+    var count = 2;
+    expect(count);
+    stop();
+
+    Delegator.listen('#the-form', 'submit', function(ev) {
+      count--;
+      ev.preventDefault();
+      ev.stopPropagation();
+
+      ok(true, "form got submitted");
+      if (count === 0) {
+        start();
+      }
+    });
+  }
+);
