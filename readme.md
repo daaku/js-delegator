@@ -1,4 +1,3 @@
-=========
 Delegator
 =========
 
@@ -8,16 +7,17 @@ mouseout, keydown, keypress, keyup, blur, focus, submit (does not work with
 "change" or "reset").  A CSS like selector with limited features is used to
 target nodes. It supports tag, id and class name based rules using the CSS
 syntax. Multiple rules may be provided by using the comma separator. There some
-examples_ and `unit tests`_.  It tries to be small, dumb and fast.
+[examples](/nshah/js-delegator/blob/master/examples.html) and
+[unit tests](/nshah/js-delegator/blob/master/tests/tests.js).  It tries to be
+small, dumb and fast.
 
-.. _examples: master/examples.html
-.. _unit tests: master/tests.js
+Use:
 
-Use::
-
-    Delegator.listen('#main .user', 'click', function(ev) {
-        // do something with 'this'
-    });
-    Delegator.listen('#id .className', 'click', fn);
-    Delegator.listen(root, '.className', 'click', fn);
-    Delegator.listen(root, 'click', fn);
+```javascript
+Delegator.listen('#main .user', 'click', function(ev) {
+    // do something with 'this'
+});
+Delegator.listen('#id .className', 'click', fn);
+Delegator.listen(root, '.className', 'click', fn);
+Delegator.listen(root, 'click', fn);
+```
