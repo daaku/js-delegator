@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Delegator Click Events</title>
+    <style>
+      #top, #top > * {
+        background-color: #eee;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 5px;
+      }
+      #top *:hover {
+        background-color: #333 !important;
+        color: #fff;
+      }
+      #top .two {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Delegator Click Events</h1>
+    <div id="top">
+      #top<br><br>
+      <div class="two"><a id="click-one">#top div.two a#click-one</a></div>
+      <h2 class="two"><a id="click-two">#top h2.two a#click-two</a></h2>
+      <div class="two three"><a id="click-three">#top div.two.three a#click-three</a></div>
+    </div>
+    <div id="result"></div>
+    <script src="../delegator.js"></script>
+    <script>
+      var count = 1
+      function log(msg) {
+        document.getElementById('result').innerHTML += (count++) + ') ' + msg + '<br>'
+      }
+
+      Delegator.listen('#top', 'click', function() {
+        log('#top was clicked.')
+      })
+
+      Delegator.listen('#top .two', 'click', function() {
+        log('#top .two was clicked.')
+      })
+
+      Delegator.listen('#top h2.two', 'click', function() {
+        log('#top h2.two was clicked.')
+      })
+
+      Delegator.listen('.three', 'click', function() {
+        log('.three was clicked.')
+      })
+
+      Delegator.listen('#top div.two.three', 'click', function() {
+        log('#top div.two.three was clicked.')
+      })
+    </script>
+  </body>
+</html>

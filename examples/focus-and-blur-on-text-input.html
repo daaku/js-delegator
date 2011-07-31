@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Delegator Focus & Blur Events</title>
+  </head>
+  <body>
+    <h1>Delegator Focus & Blur Events</h1>
+    <div id="my-context">
+      <input id="my-text-one" class="one" value="Focus Here">
+      <input id="my-text-two" class="two" value="Focus Here">
+    </div>
+    <div id="result"></div>
+    <script src="../delegator.js"></script>
+    <script>
+      var count = 1
+      function log(msg) {
+        document.getElementById('result').innerHTML += (count++) + ') ' + msg + '<br>'
+      }
+
+      Delegator.listen('#my-context .one', 'focus', function() {
+        log('focus #my-context .one')
+      })
+
+      Delegator.listen('#my-context .one', 'blur', function() {
+        log('blur #my-context .one')
+      })
+
+      Delegator.listen('#my-context .two', 'focus', function() {
+        log('focus #my-context .two')
+      })
+    </script>
+  </body>
+</html>

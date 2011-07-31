@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Delegator listen with selector and context element</title>
+  </head>
+  <body>
+    <h1>Delegator listen with selector and context element</h1>
+    <button id="my-outside-button" class="my-button">This button won't log</button>
+    <div id="my-context">
+      <button id="my-inside-button" class="my-button">This button will log</button>
+    </div>
+    <div id="result"></div>
+    <script src="../delegator.js"></script>
+    <script>
+      var count = 1
+      function log(msg) {
+        document.getElementById('result').innerHTML += (count++) + ') ' + msg + '<br>'
+      }
+
+      var contextElement = document.getElementById('my-context')
+      Delegator.listen(contextElement, '.my-button', 'click', function() {
+        log('Click event was captured')
+      })
+    </script>
+  </body>
+</html>

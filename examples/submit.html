@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Delegator Submit Event</title>
+  </head>
+  <body>
+    <h1>Delegator Submit Event</h1>
+    <form id="my-form">
+      <div>
+        <input id="my-submit" type="submit" value="Submit Button">
+        <input id="my-text" type="text" value="Focus and Press Enter">
+      </div>
+    </div>
+    <div id="result"></div>
+    <script src="../delegator.js"></script>
+    <script>
+      Delegator.listen('#my-form', 'submit', function(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        document.getElementById('result').innerHTML += 'Submit event was captured.<br>'
+      })
+    </script>
+  </body>
+</html>

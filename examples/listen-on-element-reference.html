@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Delegator listen on element reference</title>
+  </head>
+  <body>
+    <h1>Delegator listen on element reference</h1>
+    <button id="my-button">Click Here</button>
+    <div id="result"></div>
+    <script src="../delegator.js"></script>
+    <script>
+      var buttonElement = document.getElementById('my-button')
+      Delegator.listen(buttonElement, 'click', function() {
+        document.getElementById('result').innerHTML += 'Click event was captured.<br>'
+      })
+    </script>
+  </body>
+</html>
