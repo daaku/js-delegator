@@ -19,7 +19,7 @@ var makeTest = function(name, test) {
 function createSodaClient(name) {
   if (process.env.SAUCE) {
     return soda.createSauceClient({
-      'url': 'http://w.daaku.org/',
+      'url': process.env.SAUCE_URL,
       'username': process.env.SAUCE_USER,
       'access-key': process.env.SAUCE_KEY,
       'os': process.env.SAUCE_OS || 'Windows 2003',
@@ -30,7 +30,7 @@ function createSodaClient(name) {
     })
   } else {
     return soda.createClient({
-      url: 'http://w.daaku.org/',
+      url: process.env.SAUCE_URL,
       host: '127.0.0.1',
       port: 4444,
     })
@@ -47,7 +47,7 @@ var waitAssertTextPresent = function(text) {
 
 makeTest('clicks', function(browser) {
   return browser
-    .open('/js-delegator/examples/clicks.html')
+    .open('/examples/clicks.html')
     .waitForPageToLoad(2000)
     .click('css=#click-one')
     .and(waitAssertTextPresent('1) #top was clicked.'))
@@ -65,7 +65,7 @@ makeTest('clicks', function(browser) {
 
 makeTest('focus and blur on text input', function(browser) {
   return browser
-    .open('/js-delegator/examples/focus-and-blur-on-text-input.html')
+    .open('/examples/focus-and-blur-on-text-input.html')
     .waitForPageToLoad(2000)
     .fireEvent('css=#my-text-one', 'focus')
     .and(waitAssertTextPresent('1) focus #my-context .one'))
@@ -77,7 +77,7 @@ makeTest('focus and blur on text input', function(browser) {
 
 makeTest('listen on element reference', function(browser) {
   return browser
-    .open('/js-delegator/examples/listen-on-element-reference.html')
+    .open('/examples/listen-on-element-reference.html')
     .waitForPageToLoad(2000)
     .click('css=#my-button')
     .and(waitAssertTextPresent('Click event was captured.'))
@@ -85,7 +85,7 @@ makeTest('listen on element reference', function(browser) {
 
 makeTest('listen with selector and context element', function(browser) {
   return browser
-    .open('/js-delegator/examples/listen-with-selector-and-context-element.html')
+    .open('/examples/listen-with-selector-and-context-element.html')
     .waitForPageToLoad(2000)
     .click('css=#my-outside-button')
     .click('css=#my-inside-button')
@@ -97,7 +97,7 @@ makeTest('listen with selector and context element', function(browser) {
 
 makeTest('submit using submit button', function(browser) {
   return browser
-    .open('/js-delegator/examples/submit.html')
+    .open('/examples/submit.html')
     .waitForPageToLoad(2000)
     .click('css=#my-submit')
     .and(waitAssertTextPresent('Submit event was captured.'))
@@ -106,7 +106,7 @@ makeTest('submit using submit button', function(browser) {
 makeTest('submit by pressing enter in text input', function(browser) {
   var textInputLocator = 'css=#my-text'
   return browser
-    .open('/js-delegator/examples/submit.html')
+    .open('/examples/submit.html')
     .waitForPageToLoad(2000)
     .focus(textInputLocator)
     .keyPress(textInputLocator, 13)
