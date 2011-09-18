@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/nshah/js-delegator"
   },
-  "scripts": { "test": "./node_modules/.bin/expresso -c" },
+  "scripts": { "test": "./node_modules/.bin/expresso -I lib" },
   "devDependencies": {
     "expresso": ">= 0.8.1",
     "soda": ">= 0.2.4"

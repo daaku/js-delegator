@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Delegator Submit without Submits</title>
+  </head>
+  <body>
+    <h1>Delegator Submit without Submits</h1>
+    <form>
+      <input id="my-text" type="text" value="Focus and Press Enter">
+    </div>
+    <div id="result"></div>
+    <script src="../lib/delegator.js"></script>
+    <script>
+      Delegator.listen('form', 'submit', function(ev) {
+        ev.preventDefault();
+        document.getElementById('result').innerHTML += 'Submit event was captured.<br>'
+      })
+    </script>
+  </body>
+</html>

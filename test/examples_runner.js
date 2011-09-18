@@ -112,3 +112,13 @@ makeTest('submit by pressing enter in text input', function(browser) {
     .keyPress(textInputLocator, 13)
     .and(waitAssertTextPresent('Submit event was captured.'))
 })
+
+makeTest('submit by pressing enter without submit elements', function(browser) {
+  var textInputLocator = 'css=#my-text'
+  return browser
+    .open('/examples/submit-without-sumbits.html')
+    .waitForPageToLoad(2000)
+    .focus(textInputLocator)
+    .keyPress(textInputLocator, 13)
+    .and(waitAssertTextPresent('Submit event was captured.'))
+})
