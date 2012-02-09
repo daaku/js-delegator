@@ -1,18 +1,29 @@
 var soda = require('soda')
-  , assert = require('assert')
+  , path = require('path')
+  , http = require('http')
+  , paperboy = require('paperboy')
+
+var server = null
+  , port = 3333
+
+exports['before'] = function(done) {
+  server = http.createServer(function(req, res) {
+    paperboy.deliver(path.join(path.dirname(__filename), '..'), req, res)
+  })
+  server.listen(port, done)
+}
+
+exports['after'] = function(done) {
+  server.on('close', done)
+  server.close()
+}
 
 var makeTest = function(name, test) {
-  exports[name] = function(beforeExit) {
+  exports[name] = function(done) {
     var passed = false
     test(createSodaClient(name).chain.session().setTimeout(5000))
       .testComplete()
-      .end(function(er) {
-        if (er) throw er
-        passed = true
-      })
-    beforeExit(function() {
-      assert.ok(passed, name + ' passed')
-    })
+      .end(done)
   }
 }
 
@@ -30,7 +41,7 @@ function createSodaClient(name) {
     })
   } else {
     return soda.createClient({
-      url: process.env.SAUCE_URL,
+      url: 'http://127.0.0.1:' + port + '/',
       host: '127.0.0.1',
       port: 4444,
     })

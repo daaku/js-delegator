@@ -1,4 +1,4 @@
-Delegator
+Delegator [![Build Status](https://secure.travis-ci.org/nshah/js-delegator.png)](http://travis-ci.org/nshah/js-delegator)
 =========
 
 Delegator is a mini library (1.3k minified & gzip) that provides Event

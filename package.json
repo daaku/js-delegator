@@ -10,10 +10,11 @@
     "type": "git",
     "url": "https://github.com/nshah/js-delegator"
   },
-  "scripts": { "test": "./node_modules/.bin/expresso -I lib" },
+  "scripts": { "test": "NODE_PATH=./lib ./node_modules/.bin/mocha --ui exports --timeout 10000 --slow 5000 --ignore-leaks" },
   "devDependencies": {
-    "expresso": ">= 0.8.1",
+    "mocha": ">= 0.12.0",
+    "paperboy": ">= 0.0.3",
     "soda": ">= 0.2.4"
   },
-  "engines": { "node": ">= 0.4.1" }
+  "engines": { "node": ">= 0.6.10" }
 }
