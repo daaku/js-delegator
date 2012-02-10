@@ -14,6 +14,7 @@
   "devDependencies": {
     "mocha": ">= 0.12.0",
     "paperboy": ">= 0.0.3",
+    "selenium-launcher": ">= 1.0.0",
     "soda": ">= 0.2.4"
   },
   "engines": { "node": ">= 0.6.10" }

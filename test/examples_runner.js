@@ -2,20 +2,30 @@ var soda = require('soda')
   , path = require('path')
   , http = require('http')
   , paperboy = require('paperboy')
+  , seleniumLauncher = require('selenium-launcher')
 
-var server = null
+var selenium = null
+  , server = null
   , port = 3333
 
+// TODO: before/after assume starting selenium is slower than starting the
+// webserver. this is probably not ideal.
 exports['before'] = function(done) {
   server = http.createServer(function(req, res) {
     paperboy.deliver(path.join(path.dirname(__filename), '..'), req, res)
   })
-  server.listen(port, done)
+  server.listen(port)
+  seleniumLauncher(function(er, s) {
+    if (er) throw er
+    selenium = s
+    done()
+  })
 }
 
 exports['after'] = function(done) {
-  server.on('close', done)
   server.close()
+  selenium.kill()
+  selenium.on('exit', function() { done() })
 }
 
 var makeTest = function(name, test) {
