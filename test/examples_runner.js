@@ -6,7 +6,6 @@ var soda = require('soda')
 
 var selenium = null
   , server = null
-  , port = 3333
 
 // TODO: before/after assume starting selenium is slower than starting the
 // webserver. this is probably not ideal.
@@ -14,7 +13,7 @@ exports['before'] = function(done) {
   server = http.createServer(function(req, res) {
     paperboy.deliver(path.join(path.dirname(__filename), '..'), req, res)
   })
-  server.listen(port)
+  server.listen(0)
   seleniumLauncher(function(er, s) {
     if (er) throw er
     selenium = s
@@ -51,9 +50,9 @@ function createSodaClient(name) {
     })
   } else {
     return soda.createClient({
-      url: 'http://127.0.0.1:' + port + '/',
-      host: '127.0.0.1',
-      port: 4444,
+      url: 'http://127.0.0.1:' + server.address().port + '/',
+      host: selenium.host,
+      port: selenium.port,
     })
   }
 }
